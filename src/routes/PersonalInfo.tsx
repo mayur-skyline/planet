@@ -2,16 +2,27 @@ import { Field, FieldArray, FieldProps, Form, Formik } from "formik";
 import { useNavigate } from "react-router-dom";
 import Slider from "../components/Slider";
 import "../style/slider.css";
-import { useEffect } from "react";
 
-const defaultValue = { name: "", email: "" };
+interface PersonalInfoInterface {
+  name: string;
+  email: string;
+}
+
+const defaultValue: PersonalInfoInterface = { name: "", email: "" };
 
 const PersonalInfo = () => {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    localStorage.clear();
-  }, []);
+  const getPersonalInfo = (): PersonalInfoInterface[] => {
+    const data = localStorage.getItem("data");
+    if (data) {
+      const personalInfo: PersonalInfoInterface[] =
+        JSON.parse(data)?.personalInfo;
+      return personalInfo;
+    }
+
+    return [defaultValue];
+  };
 
   const redirectToPlanet = () => {
     navigate("/");
@@ -23,7 +34,7 @@ const PersonalInfo = () => {
       <Formik
         initialValues={{
           slider: 50,
-          personalInfo: [{ name: "", email: "" }],
+          personalInfo: getPersonalInfo(),
         }}
         onSubmit={(values) => {
           localStorage.setItem("data", JSON.stringify(values, null, 2));
