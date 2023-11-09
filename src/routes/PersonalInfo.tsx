@@ -2,7 +2,11 @@ import { Field, FieldArray, FieldProps, Form, Formik } from "formik";
 import { useNavigate } from "react-router-dom";
 import Slider from "../components/Slider";
 import "../style/slider.css";
-import { useEffect } from "react";
+
+interface PersonalInfoInterface {
+  name: string;
+  email: string;
+}
 
 interface PersonalInfoInterface {
   name: string;
